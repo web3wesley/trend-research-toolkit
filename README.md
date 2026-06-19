@@ -146,11 +146,11 @@ from the sampled videos.
 | Field | Meaning |
 |---|---|
 | `median_views` / `max_views` / `mean_views` | Revealed demand — are people actually watching this? |
-| `median_view_velocity_per_day` | Views ÷ video age — how fast videos accumulate views. |
+| `median_view_velocity_per_day` | Views ÷ video age — how fast videos gain views. **This is what Room to Rank is built on.** |
 | `median_age_days` | Freshness of the top results. **Old (6mo+) = neglected; days = crowded flood.** |
 | `distinct_channels` | How many different channels own the top results. |
 | `large_channel_share` | Fraction of sampled videos from 1M+ subscriber channels (competition strength). |
-| `opportunity_score` | Heuristic: `demand × (1 − big-channel share)`, relative across the run. Higher = better. |
+| `room_to_rank` | Competition-only heuristic: `100 × (view-velocity ÷ best-velocity in run) × (1 − big-channel share)`. Higher = more room. **Ignores demand by design.** |
 
 **Examples:**
 ```powershell
@@ -164,9 +164,9 @@ python scripts/youtube_competition.py --terms "AI agents" --published-after-days
 python scripts/youtube_competition.py --terms "AI agents" --region US
 ```
 
-> **The opportunity score is demand-blind** (the YouTube API can't see search volume). A high
-> score with no Google Trends demand is a **trap** — low competition *because* nobody's searching.
-> Always pair it with Tool 1.
+> **Room to Rank is demand-blind** (the YouTube API can't see search volume). A high score with
+> no Google Trends demand is a **trap** — low competition *because* nobody's searching. It uses
+> view *velocity* (not total views), so fresh, surging topics aren't penalised. Always pair it with Tool 1.
 
 ---
 
@@ -181,19 +181,15 @@ Demand (Trends) is the gate; competition only matters for topics that clear it.
 
 ---
 
-## Worked example: "AI agents" vs "AI workflows"
+## Worked example: the demand gate
 
-A real run that shows why you need both tools:
+A real run showing why you check demand *before* competition. Researching a video about YouTube
+tools, **"free VidIQ alternative" scored the highest Room to Rank (85.7)** — the lowest big-channel
+share on the board — so by competition alone it looked like the best opening. But Google Trends put
+its search demand at **~0**: nobody searches that phrase on YouTube. Low competition with no demand
+is an empty room, not an opportunity.
 
-- **Demand (Trends):** "AI agents" had high, surging YouTube interest; "AI workflows" sat near
-  **zero** for a full year. → "AI workflows" fails the demand gate.
-- **Competition (YouTube):** the opportunity score *favored* "AI workflows" (56 vs 21) — its top
-  videos were 8 months old with thin recent competition.
-- **The trap:** that low competition existed *because* there's no demand for the phrase. Those
-  views came from browse/suggested traffic, not search.
-- **Verdict:** "AI agents" — decisively. But its competition is a fresh-content flood (median age
-  ~9 days, ~half from huge channels), so you win it with a **specific long-tail angle**, found via
-  `--type RELATED_QUERIES`, not the bare head term.
+**Room to Rank is competition-only; the demand gate is what catches this.** Demand first, every time.
 
 ---
 

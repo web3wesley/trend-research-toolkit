@@ -12,6 +12,9 @@ venv/
 # Demo (showcase for the video — not part of the shippable tool)
 demo/
 
+# Local tooling (preview server config, etc.)
+.claude/
+
 # OS / editor cruft
 .DS_Store
 Thumbs.db

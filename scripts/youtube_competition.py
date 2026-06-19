@@ -185,24 +185,27 @@ def analyze_term(api_key, term, max_results, published_after, region, now):
 
 
 # --------------------------------------------------------------------------- #
-# opportunity (relative, across the terms in this run)
+# room to rank (relative, across the terms in this run) -- COMPETITION ONLY
 # --------------------------------------------------------------------------- #
-def opportunity_table(results):
+def room_to_rank_table(results):
+    """Competition-side heuristic. Uses view VELOCITY (views/day) rather than total
+    views, so a fresh-but-surging topic isn't penalised for not having accumulated
+    views yet. It deliberately ignores search demand -- read it next to trends data."""
     scored = [r for r in results if r.get("sample_size")]
     if not scored:
         return []
-    max_demand = max(r["median_views"] for r in scored) or 1
+    max_traction = max(r["median_view_velocity_per_day"] for r in scored) or 1
     out = []
     for r in scored:
-        demand_norm = r["median_views"] / max_demand          # 0..1 proven appetite
-        gap = 1.0 - r["large_channel_share"]                   # 0..1 room vs big channels
+        traction_norm = r["median_view_velocity_per_day"] / max_traction  # 0..1 watch rate
+        gap = 1.0 - r["large_channel_share"]                              # 0..1 room vs giants
         out.append({
             "term": r["term"],
-            "demand_median_views": r["median_views"],
+            "traction_views_per_day": r["median_view_velocity_per_day"],
             "large_channel_share": r["large_channel_share"],
-            "opportunity_score": round(100 * demand_norm * gap, 1),  # heuristic, higher=better
+            "room_to_rank": round(100 * traction_norm * gap, 1),  # competition-only heuristic
         })
-    out.sort(key=lambda x: x["opportunity_score"], reverse=True)
+    out.sort(key=lambda x: x["room_to_rank"], reverse=True)
     return out
 
 
@@ -279,20 +282,19 @@ def main(argv=None):
         "results": results,
     }, indent=2, ensure_ascii=False))
 
-    table = opportunity_table(results)
-    print("\n=== COMPETITION / OPPORTUNITY (heuristic; totalResults intentionally ignored) ===")
+    table = room_to_rank_table(results)
+    print("\n=== ROOM TO RANK (competition only; ignores search demand; totalResults ignored) ===")
     if not table:
         print("  No sampled videos for any term.")
     else:
         for row in table:
-            print(f"  {row['term']:<32} opportunity {row['opportunity_score']:>5}   "
-                  f"(median views {row['demand_median_views']:,}, "
+            print(f"  {row['term']:<32} room-to-rank {row['room_to_rank']:>5}   "
+                  f"(traction {row['traction_views_per_day']:,.0f} views/day, "
                   f"big-channel share {row['large_channel_share']:.0%})")
         best = table[0]
-        print(f"\n  Best demand-vs-competition gap: {best['term']} "
-              f"(score {best['opportunity_score']})")
-        print("  Higher score = strong proven views with fewer dominant 1M+ channels. "
-              "Pair with the demand/trajectory read from trends_serpapi.py.")
+        print(f"\n  Most room to rank: {best['term']} (score {best['room_to_rank']})")
+        print("  Higher = fast view-velocity with fewer dominant 1M+ channels. This is the")
+        print("  COMPETITION side ONLY -- always read it next to demand (trends_serpapi.py).")
     return 0
 
 
