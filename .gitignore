@@ -1,0 +1,17 @@
+# Secrets — never commit real keys
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Demo (showcase for the video — not part of the shippable tool)
+demo/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
