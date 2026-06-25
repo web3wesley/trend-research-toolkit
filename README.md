@@ -16,6 +16,63 @@ Two free-tier data sources, each doing one job:
 > Data API has no keyword search-volume endpoint. YouTube fills the other half: how crowded a
 > topic already is. Always check demand **first**, then competition on the survivors.
 
+**Pick your path:** [Claude Code](#use-with-claude-code-plugin) · [Codex](#use-with-codex) · [raw Python CLI](#setup-raw-python-cli) — any tool, or none.
+
+---
+
+## Use with Claude Code (plugin)
+
+Prefer to just *ask* instead of memorizing flags? If you use
+[Claude Code](https://claude.com/claude-code), install the toolkit as a plugin:
+
+```
+/plugin marketplace add web3wesley/trend-research-toolkit
+/plugin install trend-research-toolkit@web3wesley
+```
+
+Then drive the whole workflow conversationally — *"Find me a winnable YouTube topic about AI
+automation"* — and the **youtube-topic-research** skill runs the demand scan, narrows to
+finalists, checks competition, and applies the demand-gate decision table below. Or call a
+single step directly:
+
+| Command | Does |
+|---|---|
+| `/google-keywords <terms>` | Demand scan (Google Trends) |
+| `/yt-competition <terms>` | Competition check (YouTube Data API) |
+
+**Keys for the plugin install:** the plugin folder is a managed cache that's replaced on update,
+so don't keep keys there. Put them somewhere stable the scripts also read — real environment
+variables, a `.env` in the folder you're working in, or `~/.trend-research-toolkit/.env`:
+
+```
+SERPAPI_API_KEY=your-serpapi-key
+YOUTUBE_API_KEY=your-youtube-key
+```
+
+> Prefer the raw Python CLI (no Claude Code)? Skip to **Setup** below — everything there works
+> standalone.
+
+---
+
+## Use with Codex
+
+Codex reads skills straight from the repo — clone it and ask:
+
+```
+git clone https://github.com/web3wesley/trend-research-toolkit.git
+cd trend-research-toolkit
+cp .env.example .env     # add your two keys
+codex
+```
+
+The bundled **youtube-topic-research** skill (in `.codex/skills/`) loads automatically — say
+*"Find me a winnable YouTube topic about AI automation"* and Codex runs the full demand →
+competition workflow. Prefer explicit slash commands? Use `/prompts:google-keywords` and
+`/prompts:yt-competition`.
+
+> Works the same in the Codex CLI and the Codex IDE extension. Keys go in the repo's `.env`
+> (real environment variables, if set, take precedence).
+
 ---
 
 ## Project layout
@@ -26,9 +83,14 @@ Two free-tier data sources, each doing one job:
 │  ├─ trends_serpapi.py        # demand signal (Google Trends via SerpApi)
 │  ├─ youtube_competition.py   # competition signal (YouTube Data API)
 │  └─ _env.py                  # tiny .env loader (no dependencies)
+├─ .claude-plugin/             # Claude Code: plugin + marketplace manifests
+├─ commands/                   # Claude Code: /google-keywords, /yt-competition
+├─ skills/                     # Claude Code: youtube-topic-research skill
+├─ .codex/                     # Codex: youtube-topic-research skill + /prompts: commands
 ├─ .env                        # your API keys (gitignored — never commit)
 ├─ .env.example                # template
-├─ CLAUDE.md                   # routing rule for AI assistant sessions
+├─ AGENTS.md                   # routing guide for Codex / other agents
+├─ CLAUDE.md                   # routing guide for Claude Code sessions
 └─ README.md                   # this file
 ```
 
@@ -36,22 +98,31 @@ No third-party packages — the scripts use only the Python standard library. Re
 
 ---
 
-## Setup
+## Setup (raw Python CLI)
 
-1. **Get the two API keys (both free):**
+Works with any tool, or none — this is the universal path the Claude Code and Codex wrappers run under the hood.
+
+1. **Get the code** — clone it, or download the ZIP from GitHub and unzip:
+   ```
+   git clone https://github.com/web3wesley/trend-research-toolkit.git
+   cd trend-research-toolkit
+   ```
+   No git? On the repo page click **Code ▸ Download ZIP**, unzip, then open a terminal in the folder.
+
+2. **Get the two API keys (both free):**
    - **SerpApi:** sign up at <https://serpapi.com/> and copy your API key.
    - **YouTube Data API v3:** in [Google Cloud Console](https://console.cloud.google.com/), create
      a project → **Enable APIs** → enable *YouTube Data API v3* → **Credentials → Create credentials
      → API key**. (An API key is enough; no OAuth. Optionally restrict it to YouTube Data API v3.)
 
-2. **Add them to `.env`** (copy `.env.example` to `.env` if needed):
+3. **Add them to `.env`** (copy `.env.example` to `.env` if needed):
    ```
    SERPAPI_API_KEY=your-serpapi-key
    YOUTUBE_API_KEY=your-youtube-key
    ```
    The scripts auto-load `.env`. Real environment variables, if set, take precedence.
 
-3. **Run anything below.** From the project folder:
+4. **Run anything below.** From the project folder (use `python3` if that's the interpreter name):
    ```powershell
    python scripts/trends_serpapi.py --terms "AI agents,AI workflows"
    ```

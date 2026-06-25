@@ -1,0 +1,13 @@
+{
+  "name": "trend-research-toolkit",
+  "displayName": "Trend Research Toolkit",
+  "version": "1.0.0",
+  "description": "Find winnable YouTube topics by weighing demand (Google Trends via SerpApi) against competition (YouTube Data API). Ships a guided demand-vs-competition skill plus direct demand-scan and competition-check commands.",
+  "author": {
+    "name": "web3wesley"
+  },
+  "homepage": "https://github.com/web3wesley/trend-research-toolkit",
+  "repository": "https://github.com/web3wesley/trend-research-toolkit",
+  "license": "MIT",
+  "keywords": ["youtube", "trends", "research", "serpapi", "competition", "keywords"]
+}

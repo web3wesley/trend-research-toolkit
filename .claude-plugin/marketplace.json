@@ -1,0 +1,20 @@
+{
+  "name": "web3wesley",
+  "description": "web3wesley's tools — starting with the YouTube Trend Research Toolkit (demand vs competition).",
+  "owner": {
+    "name": "web3wesley"
+  },
+  "plugins": [
+    {
+      "name": "trend-research-toolkit",
+      "source": "./",
+      "description": "Find winnable YouTube topics: demand (Google Trends/SerpApi) vs competition (YouTube Data API).",
+      "version": "1.0.0",
+      "author": {
+        "name": "web3wesley"
+      },
+      "homepage": "https://github.com/web3wesley/trend-research-toolkit",
+      "repository": "https://github.com/web3wesley/trend-research-toolkit"
+    }
+  ]
+}
