@@ -13,8 +13,8 @@ them in this order — **demand is the gate; competition only matters for topics
 
 Run with `python` (or `python3`; Python 3.7+, standard library only, no install step):
 
-- Demand:      `~/.codex/skills/youtube-topic-research/scripts/trends_serpapi.py`
-- Competition: `~/.codex/skills/youtube-topic-research/scripts/youtube_competition.py`
+- Demand:      `{{SCRIPTS}}/trends_serpapi.py`
+- Competition: `{{SCRIPTS}}/youtube_competition.py`
 
 ## Workflow
 
@@ -22,7 +22,7 @@ Run with `python` (or `python3`; Python 3.7+, standard library only, no install 
 10) by relative search interest with trajectory:
 
 ```
-python "~/.codex/skills/youtube-topic-research/scripts/trends_serpapi.py" --terms "a,b,c,d,e" --timeframe "today 3-m" --gprop youtube
+python "{{SCRIPTS}}/trends_serpapi.py" --terms "a,b,c,d,e" --timeframe "today 3-m" --gprop youtube
 ```
 
 Read the SUMMARY: average interest per term, which leads, crossover points, and each term's
@@ -34,7 +34,7 @@ regional split, or `--type RELATED_QUERIES` (one term at a time) for sub-topics 
 **2. COMPETITION — finalists only.** Measure how crowded the 2–3 finalists are:
 
 ```
-python "~/.codex/skills/youtube-topic-research/scripts/youtube_competition.py" --terms "a,b" --max 25
+python "{{SCRIPTS}}/youtube_competition.py" --terms "a,b" --max 25
 ```
 
 Read the **Room to Rank** table (higher = fast view-velocity with few dominant 1M+ channels),

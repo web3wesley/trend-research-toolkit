@@ -107,6 +107,7 @@ Either way, ask in plain language and Codex runs the full demand → competition
 │  ├─ trends_serpapi.py        # demand signal (Google Trends via SerpApi)
 │  ├─ youtube_competition.py   # competition signal (YouTube Data API)
 │  └─ _env.py                  # tiny .env loader (no dependencies)
+├─ build/                      # maintainers: SKILL.template.md + build.py (regenerates the copies)
 ├─ .claude-plugin/             # Claude Code: plugin + marketplace manifests
 ├─ commands/                   # Claude Code: /google-keywords, /yt-competition
 ├─ skills/                     # Claude Code: youtube-topic-research skill
@@ -120,6 +121,11 @@ Either way, ask in plain language and Codex runs the full demand → competition
 ```
 
 No third-party packages — the scripts use only the Python standard library. Requires **Python 3.7+**.
+
+> **Maintainers:** edit only `scripts/` and `build/SKILL.template.md`. The four `SKILL.md` copies
+> and the drag-and-drop bundles' script copies are **generated** — run `python build/build.py`
+> after any change (`python build/build.py --check` verifies they're in sync). Don't edit the
+> generated files directly.
 
 ---
 
