@@ -16,33 +16,38 @@ Two free-tier data sources, each doing one job:
 > Data API has no keyword search-volume endpoint. YouTube fills the other half: how crowded a
 > topic already is. Always check demand **first**, then competition on the survivors.
 
-**Pick your path:** [Claude Code](#use-with-claude-code-plugin) · [Codex](#use-with-codex) · [raw Python CLI](#setup-raw-python-cli) — any tool, or none.
+**Pick your path:** [Claude Code](#use-with-claude-code) · [Codex](#use-with-codex) · [raw Python CLI](#setup-raw-python-cli) — any tool, or none.
 
 ---
 
-## Use with Claude Code (plugin)
+## Use with Claude Code
 
-Prefer to just *ask* instead of memorizing flags? If you use
-[Claude Code](https://claude.com/claude-code), install the toolkit as a plugin:
+Two ways, both work in the Desktop app, the VS Code extension, and the CLI.
 
-```
-/plugin marketplace add web3wesley/trend-research-toolkit
-/plugin install trend-research-toolkit@web3wesley
-```
+### Option A — drag-and-drop the skill (easiest, nothing to type)
 
-Then drive the whole workflow conversationally — *"Find me a winnable YouTube topic about AI
-automation"* — and the **youtube-topic-research** skill runs the demand scan, narrows to
-finalists, checks competition, and applies the demand-gate decision table below. Or call a
-single step directly:
+1. Download the repo (green **Code ▸ Download ZIP**) and unzip it.
+2. Open **`install/claude/`** and copy the whole **`youtube-topic-research`** folder.
+3. Paste it into your Claude Code skills folder (create the folders if they don't exist):
+   - **Windows:** `%USERPROFILE%\.claude\skills`
+   - **macOS/Linux:** `~/.claude/skills`
+4. In that copied folder, rename **`.env.example`** to **`.env`** and add your two keys
+   (or put them in `~/.trend-research-toolkit/.env`, which the skill also reads).
+5. **Restart Claude Code.** Then ask *"Find me a winnable YouTube topic about AI automation"* —
+   or type **`/youtube-topic-research`**.
 
-| Command | Does |
-|---|---|
-| `/google-keywords <terms>` | Demand scan (Google Trends) |
-| `/yt-competition <terms>` | Competition check (YouTube Data API) |
+### Option B — install as a plugin (adds the `/google-keywords` + `/yt-competition` commands)
 
-**Keys for the plugin install:** the plugin folder is a managed cache that's replaced on update,
-so don't keep keys there. Put them somewhere stable the scripts also read — real environment
-variables, a `.env` in the folder you're working in, or `~/.trend-research-toolkit/.env`:
+- **VS Code extension:** type **`/plugins`** → **Marketplaces** tab → add `web3wesley/trend-research-toolkit` → **Plugins** tab → **Install**.
+- **Desktop app:** click **+** next to the prompt box → **Plugins** → **Add plugin**.
+- **Terminal CLI:** `claude plugin marketplace add web3wesley/trend-research-toolkit` then `claude plugin install trend-research-toolkit@web3wesley`.
+
+Restart when prompted. You get the conversational skill **and** the `/google-keywords` /
+`/yt-competition` slash commands.
+
+**Keys (either option):** the plugin cache is replaced on update, so keep keys somewhere stable —
+`~/.trend-research-toolkit/.env`, a real environment variable, or (for the drag-and-drop install)
+the `.env` next to the skill:
 
 ```
 SERPAPI_API_KEY=your-serpapi-key
@@ -79,7 +84,7 @@ Copy the self-contained skill into your global Codex skills folder so it works i
 without opening this repo:
 
 1. Download the repo (green **Code ▸ Download ZIP**) and unzip it.
-2. Inside, open **`dist/codex-global-skill/`** and copy the whole **`youtube-topic-research`** folder.
+2. Inside, open **`install/codex/`** and copy the whole **`youtube-topic-research`** folder.
 3. Paste it into your global Codex skills folder (create the folders if they don't exist):
    - **Windows:** `%USERPROFILE%\.codex\skills`
    - **macOS/Linux:** `~/.codex/skills`
@@ -106,7 +111,7 @@ Either way, ask in plain language and Codex runs the full demand → competition
 ├─ commands/                   # Claude Code: /google-keywords, /yt-competition
 ├─ skills/                     # Claude Code: youtube-topic-research skill
 ├─ .codex/                     # Codex: youtube-topic-research skill + /prompts: commands
-├─ dist/                       # Codex: downloadable global-install skill bundle (Option B)
+├─ install/                    # drag-and-drop bundles → claude/ and codex/ (copy into your skills folder)
 ├─ .env                        # your API keys (gitignored — never commit)
 ├─ .env.example                # template
 ├─ AGENTS.md                   # routing guide for Codex / other agents
