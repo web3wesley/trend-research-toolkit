@@ -56,7 +56,12 @@ YOUTUBE_API_KEY=your-youtube-key
 
 ## Use with Codex
 
-Codex reads skills straight from the repo — clone it and ask:
+Codex loads `SKILL.md` skills from a folder. Two ways to set it up:
+
+### Option A — just this project (quickest)
+
+Clone the repo and open it in Codex; the skill in `.codex/skills/` loads automatically whenever
+this folder is the open workspace:
 
 ```
 git clone https://github.com/web3wesley/trend-research-toolkit.git
@@ -65,13 +70,27 @@ cp .env.example .env     # add your two keys
 codex
 ```
 
-The bundled **youtube-topic-research** skill (in `.codex/skills/`) loads automatically — say
-*"Find me a winnable YouTube topic about AI automation"* and Codex runs the full demand →
-competition workflow. Prefer explicit slash commands? Use `/prompts:google-keywords` and
-`/prompts:yt-competition`.
+You also get the `/prompts:google-keywords` and `/prompts:yt-competition` slash commands (from
+`.codex/prompts/`) while this repo is open.
 
-> Works the same in the Codex CLI and the Codex IDE extension. Keys go in the repo's `.env`
-> (real environment variables, if set, take precedence).
+### Option B — every project (global install)
+
+Copy the self-contained skill into your global Codex skills folder so it works in any workspace,
+without opening this repo:
+
+1. Download the repo (green **Code ▸ Download ZIP**) and unzip it.
+2. Inside, open **`dist/codex-global-skill/`** and copy the whole **`youtube-topic-research`** folder.
+3. Paste it into your global Codex skills folder (create the folders if they don't exist):
+   - **Windows:** `%USERPROFILE%\.codex\skills`
+   - **macOS/Linux:** `~/.codex/skills`
+4. In that copied folder, rename **`.env.example`** to **`.env`** and add your two keys
+   (or put them in `~/.trend-research-toolkit/.env`, which the skill also reads).
+5. **Reload Codex.** From *any* project, ask *"Find me a winnable YouTube topic about AI automation."*
+
+Either way, ask in plain language and Codex runs the full demand → competition workflow.
+
+> Works the same in the Codex CLI and the Codex IDE extension. Option B bundles its own scripts,
+> so it needs nothing from this repo once copied.
 
 ---
 
@@ -87,6 +106,7 @@ competition workflow. Prefer explicit slash commands? Use `/prompts:google-keywo
 ├─ commands/                   # Claude Code: /google-keywords, /yt-competition
 ├─ skills/                     # Claude Code: youtube-topic-research skill
 ├─ .codex/                     # Codex: youtube-topic-research skill + /prompts: commands
+├─ dist/                       # Codex: downloadable global-install skill bundle (Option B)
 ├─ .env                        # your API keys (gitignored — never commit)
 ├─ .env.example                # template
 ├─ AGENTS.md                   # routing guide for Codex / other agents
