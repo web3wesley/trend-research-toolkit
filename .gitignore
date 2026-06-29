@@ -15,6 +15,9 @@ demo/
 # Local tooling (preview server config, etc.)
 .claude/
 
+# HyperFrames video project (showcase, not part of the tool)
+video/
+
 # OS / editor cruft
 .DS_Store
 Thumbs.db
