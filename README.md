@@ -38,12 +38,18 @@ Two ways, both work in the Desktop app, the VS Code extension, and the CLI.
 
 ### Option B — install as a plugin (adds the `/google-keywords` + `/yt-competition` commands)
 
+Heads-up: adding a **custom** marketplace (this repo) by clicks is only confirmed in **VS Code**.
+The Desktop app's in-app plugin browser lists Anthropic's marketplace plus any already configured
+on your machine — it can't add a custom marketplace on its own.
+
 - **VS Code extension:** type **`/plugins`** → **Marketplaces** tab → add `web3wesley/trend-research-toolkit` → **Plugins** tab → **Install**.
-- **Desktop app:** click **+** next to the prompt box → **Plugins** → **Add plugin**.
-- **Terminal CLI:** `claude plugin marketplace add web3wesley/trend-research-toolkit` then `claude plugin install trend-research-toolkit@web3wesley`.
+- **Terminal CLI (works for any surface, including Desktop):** `claude plugin marketplace add web3wesley/trend-research-toolkit` then `claude plugin install trend-research-toolkit@web3wesley`.
 
 Restart when prompted. You get the conversational skill **and** the `/google-keywords` /
 `/yt-competition` slash commands.
+
+> No terminal and not in VS Code? Use **Option A** (drag-and-drop) — it needs no marketplace and
+> works the same on the Desktop app, the IDE, and the CLI.
 
 **Keys (either option):** the plugin cache is replaced on update, so keep keys somewhere stable —
 `~/.trend-research-toolkit/.env`, a real environment variable, or (for the drag-and-drop install)
