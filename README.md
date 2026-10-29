@@ -29,7 +29,7 @@ Two ways, both work in the Desktop app, the VS Code extension, and the CLI.
 1. Download the repo (green **Code ▸ Download ZIP**) and unzip it.
 2. Open **`install/claude/`** and copy the whole **`youtube-topic-research`** folder.
 3. Paste it into your Claude Code skills folder (create the folders if they don't exist):
-   - **Windows:** `~/.claude/skills`
+   - **Windows:** `%USERPROFILE%\.claude\skills`
    - **macOS/Linux:** `~/.claude/skills`
 4. In that copied folder, rename **`.env.example`** to **`.env`** and add your two keys
    (or put them in `~/.trend-research-toolkit/.env`, which the skill also reads).
@@ -87,7 +87,7 @@ without opening this repo:
 1. Download the repo (green **Code ▸ Download ZIP**) and unzip it.
 2. Inside, open **`install/codex/`** and copy the whole **`youtube-topic-research`** folder.
 3. Paste it into your global Codex skills folder (create the folders if they don't exist):
-   - **Windows:** `~/.codex/skills`
+   - **Windows:** `%USERPROFILE%\.codex\skills`
    - **macOS/Linux:** `~/.codex/skills`
 4. In that copied folder, rename **`.env.example`** to **`.env`** and add your two keys
    (or put them in `~/.trend-research-toolkit/.env`, which the skill also reads).
