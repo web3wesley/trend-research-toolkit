@@ -7,7 +7,7 @@ searching) against **competition** (what already exists). The goal is the best
 Two free data sources, two jobs. Run them in this order.
 
 > This file is the tool-agnostic guide (Codex and other agents read `AGENTS.md`). Claude Code
-> users get the same routing from `CLAUDE.md` and the bundled skill; the content is identical.
+> reads it through `CLAUDE.md`, which imports this file.
 
 ## 1. DEMAND — broad scan (do this first)
 
